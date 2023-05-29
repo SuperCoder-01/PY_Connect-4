@@ -46,6 +46,7 @@ while running:
                         label = Font.render("Red wins!", True, COLORS["RED"])
                         screen.blit(label, (40, 10))
                         running = False
+                        continue
             elif board.is_valid(col): # Player 2's turn
                 row: int | None = board.get_next_open_row(col)
                 board.drop_piece(row, col, 2)
@@ -54,6 +55,7 @@ while running:
                     label = Font.render("Yellow wins!", True, COLORS["YELLOW"])
                     screen.blit(label, (40, 10))
                     running = False
+                    continue
 
             # Check for draw
             for col in range(board.COLUMNS):

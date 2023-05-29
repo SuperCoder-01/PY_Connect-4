@@ -46,7 +46,8 @@ while running:
                         label = Font.render("Red wins!", True, COLORS["RED"])
                         screen.blit(label, (40, 10))
                         running = False
-                        continue
+                    turn += 1
+                    turn %= 2
             elif board.is_valid(col): # Player 2's turn
                 row: int | None = board.get_next_open_row(col)
                 board.drop_piece(row, col, 2)
@@ -55,20 +56,21 @@ while running:
                     label = Font.render("Yellow wins!", True, COLORS["YELLOW"])
                     screen.blit(label, (40, 10))
                     running = False
-                    continue
+                turn += 1
+                turn %= 2
 
             # Check for draw
-            for col in range(board.COLUMNS):
-                if board.get_next_open_row(col) is not None:
-                    break
-            else:
-                label = Font.render("It's a draw", True, COLORS["ORANGE"])
-                screen.blit(label, (40, 10))
-                running = False
+            if running:
+                for col in range(board.COLUMNS):
+                    if board.get_next_open_row(col) is not None:
+                        break
+                else:
+                    label = Font.render("It's a draw", True, COLORS["ORANGE"])
+                    screen.blit(label, (40, 10))
+                    running = False
 
             board.update(screen)
-            turn += 1
-            turn %= 2
+
 
 # Game ended
 pg.time.wait(3000)

@@ -20,6 +20,7 @@ while running:
     for event in pg.event.get():
         if event.type == pg.QUIT:
             quit()
+
         # Mouse events
         if event.type == pg.MOUSEMOTION:
             pg.draw.rect(screen, COLORS["BLACK"], (0, 0, board.WIDTH, board.SQUARE_SIZE))
@@ -30,6 +31,7 @@ while running:
                 pg.draw.circle(screen, COLORS["YELLOW"], (posX, int(board.SQUARE_SIZE / 2)), board.CIRCLE_RADIUS)
 
         pg.display.update()
+
         if event.type == pg.MOUSEBUTTONDOWN:
             pg.draw.rect(screen, COLORS["BLACK"], (0, 0, board.WIDTH, board.SQUARE_SIZE))
             posX = event.pos[0]
@@ -44,7 +46,7 @@ while running:
                         label = Font.render("Red wins!", True, COLORS["RED"])
                         screen.blit(label, (40, 10))
                         running = False
-            elif board.is_valid(col):
+            elif board.is_valid(col): # Player 2's turn
                 row: int | None = board.get_next_open_row(col)
                 board.drop_piece(row, col, 2)
                 # Check for win
@@ -52,6 +54,15 @@ while running:
                     label = Font.render("Yellow wins!", True, COLORS["YELLOW"])
                     screen.blit(label, (40, 10))
                     running = False
+
+            # Check for draw
+            for col in range(board.COLUMNS):
+                if board.get_next_open_row(col) is not None:
+                    break
+            else:
+                label = Font.render("It's a draw", True, COLORS["ORANGE"])
+                screen.blit(label, (40, 10))
+                running = False
 
             board.update(screen)
             turn += 1
